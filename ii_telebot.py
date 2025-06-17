@@ -14,15 +14,32 @@ bot = telebot.TeleBot(config.get('TOKEN_BOT'), parse_mode=None)
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     bot.reply_to(message,
-                 'Чтобы сгенерировать еическую картинку, отправь команду /ii')
+                 'Чтобы отпраздновать сегодняшний праздник, отправь команду /ii. Чтобы сгенерировать еическую картинку, отправь команду /iii')
 
 
 @bot.message_handler(commands=['ii'])
-def send_welcome(message):
+def send_img(message):
     if message.from_user.username in ('AnnaTityushina', 'languidPhonetician'):
-        bot.reply_to(message, f"Надо подождать")
         req = get_today_request()
+        bot.reply_to(message, f"Надо подождать. Сегодня празднуем: {req}")
         image_data = get_pic_for_today(req)
+        try:
+            image_file = BytesIO(image_data)
+            image_file.name = 'image.png'
+            bot.send_photo(message.chat.id, image_file)
+        except Exception as e:
+            bot.reply_to(message, f"Error sending image: {e}")
+
+    else:
+        bot.reply_to(message,
+                     "А вы кто")
+
+
+@bot.message_handler(commands=['iii'])
+def send_img(message):
+    if message.from_user.username in ('AnnaTityushina', 'languidPhonetician'):
+        bot.reply_to(message, f"Надо подождать. Всё будет еически.")
+        image_data = get_pic_for_today('еическое')
         try:
             image_file = BytesIO(image_data)
             image_file.name = 'image.png'
