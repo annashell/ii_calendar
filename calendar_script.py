@@ -1,5 +1,8 @@
 import datetime
 import time
+import urllib.request
+from bs4 import BeautifulSoup
+import ssl
 
 
 def date_to_rus(date):
@@ -16,4 +19,23 @@ def get_today_request():
     return holidays[date_to_rus(realtime)]
 
 
-get_today_request()
+def get_today_holidays():
+    useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    HOLIDAYS_URL = "https://kakoyprazdnik.com/"
+    req = urllib.request.Request(HOLIDAYS_URL, headers={"User-Agent": useragent, "authorization": ""})
+    try:
+        with urllib.request.urlopen(req, context=ctx) as f:
+            data = f.read().decode("utf-8")
+    except Exception as e:
+        return "Ошибочка вышла"
+
+    soup = BeautifulSoup(data, features="html.parser")
+    holidays = soup.find_all("h4")
+
+    if len(holidays) == 0:
+        return "Ошибочка вышла"
+    else:
+        return '\n\n'.join(['\U0001F389' + name.getText().strip() for name in holidays])
