@@ -22,8 +22,8 @@ def send_img(message):
     if message.from_user.username in ('AnnaTityushina', 'languidPhonetician'):
         req = get_today_request()
         bot.reply_to(message, f"Надо подождать. Сегодня празднуем: {req}")
-        image_data = get_pic_for_today(req)
         try:
+            image_data = get_pic_for_today(req)
             image_file = BytesIO(image_data)
             image_file.name = 'image.png'
             bot.send_photo(message.chat.id, image_file)
@@ -39,8 +39,8 @@ def send_img(message):
 def send_img(message):
     if message.from_user.username in ('AnnaTityushina', 'languidPhonetician'):
         bot.reply_to(message, f"Надо подождать. Всё будет еически.")
-        image_data = get_pic_for_today('еическое')
         try:
+            image_data = get_pic_for_today('еическое')
             image_file = BytesIO(image_data)
             image_file.name = 'image.png'
             bot.send_photo(message.chat.id, image_file)
@@ -56,7 +56,6 @@ def send_img(message):
 def send_img(message):
     if message.from_user.username in ('AnnaTityushina', 'languidPhonetician'):
         holidays = get_today_holidays()
-
         bot.reply_to(message, f"Сегодня празднуем:\n\n {holidays}")
     else:
         bot.reply_to(message,
