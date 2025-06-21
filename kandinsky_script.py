@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 URL = "https://api-key.fusionbrain.ai/"
 config = dotenv_values(".env")
 api_key = config.get('API_KEY')
-secret_key = config.get('9DCE470F0E9D1AD925FE1C45D3D4C2C2')
+secret_key = config.get('SECRET_KEY')
 
 
 class KandinskyRequest:
@@ -55,7 +55,7 @@ class KandinskyRequest:
 
 
 def get_pic_for_today(req):
-    kr = KandinskyRequest(URL, API_KEY, SECRET_KEY)
+    kr = KandinskyRequest(URL, api_key, secret_key)
     pipeline_id = kr.get_pipeline()
     uuid = kr.generate(req, pipeline_id)
     files = kr.check_generation(uuid)
