@@ -2,10 +2,12 @@ import requests
 import json
 import time
 import base64
+from dotenv import dotenv_values
 
 URL = "https://api-key.fusionbrain.ai/"
-API_KEY = "D17BAAFF779394D3D2779B884225D0EA"
-SECRET_KEY = "9DCE470F0E9D1AD925FE1C45D3D4C2C2"
+config = dotenv_values(".env")
+api_key = config.get('API_KEY')
+secret_key = config.get('9DCE470F0E9D1AD925FE1C45D3D4C2C2')
 
 
 class KandinskyRequest:
@@ -59,4 +61,3 @@ def get_pic_for_today(req):
     files = kr.check_generation(uuid)
     image_data = base64.b64decode(files[0])
     return image_data
-
